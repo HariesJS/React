@@ -1,5 +1,5 @@
 import React, { useEffect, Fragment } from 'react';
-import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
+import { HashRouter, Switch, Redirect, Route } from 'react-router-dom';
 import './App.css';
 import Header from './components/header/Header';
 import { Provider, useDispatch, useSelector } from 'react-redux';
@@ -40,11 +40,11 @@ const Project = () => {
 }
 
 const App = () => (
-    <BrowserRouter>
+    <HashRouter>
         <Provider store={store}>
             <Project />
         </Provider>
-    </BrowserRouter>
+    </HashRouter>
 )
 
 export default App;

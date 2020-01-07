@@ -57,7 +57,7 @@ const ProfileData = ({ isOwner, onClick, profile: { contacts, aboutMe, lookingFo
             </div>
             <div>{
                 Object.keys(contacts).map(e => (
-                    <div key={e}>{contacts[e] && <><b>{e}:</b> {contacts[e]}</>}</div>
+                    <div key={e}>{contacts[e] && <><b className='profile-networks'>{e}:</b> {contacts[e]}</>}</div>
                 ))
             }</div>
         </Fragment>

@@ -78,13 +78,17 @@ const getTotalCount = totalCount => ({ type: GET_TOTAL_COUNT, totalCount });
 const setCurrentPage = currentPage => ({ type: SET_CURRENT_PAGE, currentPage });
 
 export const getUsersThunk = (page = 1) => async (dispatch, getState) => {
-    const count = getState().usersPage.pageCount;
-    dispatch(setLoader(true));
-    const response = await usersAPI.getUsers(page, count);
-    dispatch(getUsersCreator(response.data.items));
-    dispatch(getTotalCount(response.data.totalCount));
-    dispatch(setCurrentPage(page));
-    dispatch(setLoader(false));
+    try {
+        const count = getState().usersPage.pageCount;
+        dispatch(setLoader(true));
+        const response = await usersAPI.getUsers(page, count);
+        dispatch(getUsersCreator(response.data.items));
+        dispatch(getTotalCount(response.data.totalCount));
+        dispatch(setCurrentPage(page));
+        dispatch(setLoader(false));
+    } catch (error) {
+        dispatch(setGlobalErrorThunk(error));
+    }
 }
 
 export const follow = id => dispatch => {
