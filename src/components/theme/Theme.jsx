@@ -7,9 +7,12 @@ const Button = ({ children }) => {
     const dispatch = useDispatch();
 
     const changeTheme = e => {
+        localStorage.setItem('theme', '#3959ab');
+
         if (e.target.innerHTML === 'Blue') {
-            return dispatch(setThemeColorCreator('#3959ab'));
+            return dispatch(setThemeColorCreator(localStorage.getItem('theme')));
         } else {
+            localStorage.setItem('theme', e.target.innerText);
             return dispatch(setThemeColorCreator(e.target.innerText));
         }
     }

@@ -1,7 +1,7 @@
 const SET_COLOR = 'my-app/themeReducer/SET-COLOR';
 
 const initialState = {
-    color: '#3959ab'
+    color: localStorage.getItem('theme') ? localStorage.getItem('theme') : '#3959ab'
 }
 
 const themeReducer = (state = initialState, action) => {

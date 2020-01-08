@@ -16,7 +16,7 @@ const Users = () => {
     const color = useSelector(state => state.theme.color);
     const data = useSelector(state => state.auth.data);
 
-    const loadUsers = useCallback(page => dispatch(getUsersThunk(page)), [getUsersThunk])
+    const loadUsers = useCallback(page => dispatch(getUsersThunk(page)), [getUsersThunk]);
 
 
     useEffect(() => {
@@ -44,11 +44,13 @@ const Users = () => {
                             </Link>
                         </div>
                         <div>{
-                            e.id === data.id
+                            data.isAuth
+                            ? e.id === data.id
                             ? <Link to='/profile' className='button'>Мой профиль</Link>
                             : e.followed
                             ? <button className='button' disabled={isDisabled.some(id => id === e.id)} onClick={() => dispatch(unfollow(e.id))}>Отписаться</button>
                             : <button className='button' disabled={isDisabled.some(id => id === e.id)} onClick={() => dispatch(follow(e.id))}>Подписаться</button>
+                            : <Link to='/login' className='button'>Войдите</Link>
                         }</div>
                     </div>
                 ))

@@ -6,7 +6,7 @@ const SET_COUNT = 'my-app/appReducer/SET-COUNT';
 
 const initialState = {
     initializing: false,
-    count: 95,
+    count: 5,
     globalError: null
 }
 
