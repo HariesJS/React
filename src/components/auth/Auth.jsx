@@ -26,6 +26,7 @@ const Auth = () => {
     const logoutForm = () => {
         setActive(false);
         dispatch(logoutMeThunk());
+        localStorage.setItem('theme', '#3959ab');
         dispatch(setThemeColorCreator('#3959ab'));
         dispatch(setActualDeauthCreator(true));
     }
