@@ -1,7 +1,18 @@
 /* HEADER */
 
+.border-title {
+    font-size: 20px;
+    color: white;
+}
+
+.color-img:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
 .header {
-    background-color: #3959ab;
+    position: fixed;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -9,13 +20,50 @@
     box-shadow: 0px 0px 5px black;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 700px) {
     .header {
         display: flex;
         flex-direction: column;
     }
-    .profile-page {
+    .profile-flex {
         flex-direction: column;
+    }
+    .border-title {
+        display: none;
+    }
+    .header-wrapper {
+        padding-bottom: 20%;
+    }
+    .wrapper-updates {
+        padding-top: 5%;
+    }
+    .theme-colors {
+        right: 30%;
+        top: 12%;
+    }
+    .users-title {
+        margin-bottom: 5%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .wrapper-profile {
+        margin-top: 10%;
+    }
+    .users-wrapper {
+        margin-top: 5%;
+    }
+    .global-block {
+        margin: 10%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .header-wrapper {
+        padding-bottom: 25%;
+    }
+    .theme-colors {
+        right: 17%;
     }
 }
 
@@ -33,6 +81,15 @@
     color: white;
     text-transform: uppercase;
     font-family: sans-serif;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+}
+
+.beta-title {
+    font-size: 10px;
+    padding-left: 5px;
+    text-shadow: 0px 0px 2.5px white;
 }
 
 /* USERS */
@@ -41,7 +98,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+    padding-top: 10%;
 }
 
 .users-title {
@@ -55,17 +112,23 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 20%;
     color: white;
+    padding-top: 5%;
+    padding-bottom: 5%;
     margin-bottom: 20%;
-    background-color: hsl(223, 50%, 45%);
-    padding: 10%;
     box-shadow: 3px 3px 8px black;
+    transition: 0.5s;
+}
+
+.user-block:hover {
+    transition: 0.5s;
+    box-shadow: 12px 12px 32px black;
 }
 
 .parrent-block {
-    padding-top: 2%;
-    width: 30%;
+    padding: 5%;
+    min-width: 20%;
+    max-width: 40%;
 }
 
 .users-loader {
@@ -77,16 +140,32 @@
     font-weight: bold;
 }
 
+.button {
+    color: cornflowerblue;
+    text-transform: uppercase;
+    font-size: 100%;
+    background: none;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    text-decoration: none;
+}
+
+.button:hover {
+    transition: 0.4s;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
 /* PAGINATOR */
 
 .paginator {
-    font-size: 20px;
+    font-size: 100%;
     border-style: solid;
     border-width: 2px;
-    border-color: #3959ab;
     padding: 5px;
     transition: 0.3s;
-    margin: 5px;
+    margin: 2px;
     display: inline;
 }
 
@@ -101,37 +180,46 @@
 
 .paginator-active {
     text-align: center;
-    background-color: #3959ab;
     color: white;
-    font-size: 20px;
+    font-size: 100%;
     border-style: solid;
     border-width: 2px;
-    border-color: #3959ab;
     box-shadow: 1px 1px 2px black;
     padding: 5px;
     transition: 0.3s;
-    margin: 5px;
+    margin: 2px;
     display: inline;
 }
 
 /* PROFILE */
 
 .profile-page {
-    background-color: #3959ab;
     color: white;
     box-shadow: 0px 0px 4px black;
     margin: 2%;
     padding: 2%;
+    align-items: center;
+    margin-top: 5%;
+}
+
+.profile-flex {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.wrapper-profile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 5%;
 }
 
 .profile-img {
     box-shadow: 0px 0px 5px black;
     margin-top: 2%;
     margin-bottom: 2%;
-    min-width: 10%;
+    min-width: 100px;
     width: 100%;
 }
 
@@ -167,7 +255,51 @@
     align-items: center;
 }
 
+.followers-info {
+    font-size: 10px;
+    text-align: center;
+}
+
+.followers-wrapper {
+    margin: 2%;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.followers-block {
+    box-shadow: 3px 3px 12px black;
+    padding: 2%;
+    border-radius: 15px;
+}
+
+.follow-title {
+    padding-bottom: 5%;
+}
+
+.image-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-user {
+    width: 30%;
+    min-width: 50px;
+}
+
+.follower-name {
+    text-align: center;
+    font-size: 10px;
+}
+
 /* AUTH */
+
+.login-wrapper {
+    padding-top: 5%;
+}
 
 .auth-user, .auth-login {
     color: white;
@@ -190,13 +322,11 @@
 }
 
 .logout {
-    /* visibility: hidden; */
     display: flex;
     justify-content: center;
     position: absolute;
     margin-top: 2px;
     color: white;
-    background-color: #3959ab;
     box-shadow: 2px 2px 4px black;
     transition: 0.2s;
     padding: 1%;
@@ -205,8 +335,7 @@
 }
 
 .logout:hover {
-    background: white;
-    color: black;
+    box-shadow: 6px 6px 16px black;
     cursor: pointer;
 }
 
@@ -295,5 +424,71 @@
     border: 2px solid #922B12;
     padding: 1%;
     margin: 1%;
+    width: 100%;
     text-align: center;
+}
+
+.global-block {
+    padding-top: 5%;
+    display: flex;
+    justify-content: center;
+}
+
+.authorized-message {
+    position: fixed;
+    left: 3%;
+    top: 90%;
+    color: white;
+    background-color: green;
+    padding: 1%;
+    box-shadow: 2px 2px 5px black;
+    text-transform: uppercase;
+}
+
+/* UPDATES */
+
+.updates-block {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+}
+
+.updates-title {
+    font-size: 25px;
+    padding: 1%;
+    text-transform: uppercase;
+}
+
+.updates-info {
+    font-size: 20px;
+    text-transform: uppercase;
+    padding-bottom: 5%;
+}
+
+.updates-end {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 5%;
+}
+
+/* THEME */
+
+.theme-colors {
+    text-transform: uppercase;
+    position: absolute;
+    margin-top: 1.2%;
+    box-shadow: 2px 2px 3px black;
+    color: white;
+    /* padding: 1%; */
+}
+
+.theme-button:hover {
+    background-color: white;
+    color: black;
+    width: 100%;
+    cursor: pointer;
 }

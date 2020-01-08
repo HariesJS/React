@@ -77,9 +77,9 @@ const setLoader = isLoad => ({ type: SET_LOADER, isLoad });
 const getTotalCount = totalCount => ({ type: GET_TOTAL_COUNT, totalCount });
 const setCurrentPage = currentPage => ({ type: SET_CURRENT_PAGE, currentPage });
 
-export const getUsersThunk = (page = 1) => async (dispatch, getState) => {
+export const getUsersThunk = (page = 1, count = 30) => async (dispatch, getState) => {
     try {
-        const count = getState().usersPage.pageCount;
+        // const count = getState().usersPage.pageCount;
         dispatch(setLoader(true));
         const response = await usersAPI.getUsers(page, count);
         dispatch(getUsersCreator(response.data.items));

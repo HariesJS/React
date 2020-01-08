@@ -8,7 +8,7 @@ const ProfileDataForm = ({ handleSubmit, profile: { contacts }, error }) => (
         {error && <h2>{error}</h2>}
         <div className='profile-form'>
             <div><b>ABOUT ME:</b> <div className='edit-button'>
-                <button>SAVE</button>
+                <button className='button'>SAVE</button>
             </div> <div>{createFiled(Textarea, 'aboutMe', [])}</div></div>
             <div><b>SEARCH JOB:</b> {createFiled(Input, 'lookingForAJob', [], 'checkbox')}</div>
             <div><b>MY SKILLS:</b> <div>{createFiled(Textarea, 'lookingForAJobDescription', [])}</div></div>

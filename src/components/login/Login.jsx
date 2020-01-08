@@ -6,9 +6,9 @@ import '../../App.css';
 import cn from 'classnames';
 import { createFiled, Input } from '../../redux/reduxForm/formsControl';
 import { requireField, maxLength } from '../../redux/reduxForm/validators';
-import { postAuthThunk } from '../../redux/reducers/authReducer/authReducer';
+import { postAuthThunk, setActualAuthCreator } from '../../redux/reducers/authReducer/authReducer';
 
-const maxSymbols = maxLength(16);
+const maxSymbols = maxLength(32);
 
 const Wrapper = ({ title, children, bclass }) => {
     const content = <b className={bclass}>{title}</b>
@@ -25,31 +25,36 @@ const Wrapper = ({ title, children, bclass }) => {
     )
 }
 
-const LoginFields = ({ handleSubmit, error, captcha }) => (
-    <form onSubmit={handleSubmit} className={cn('profile-page', 'auth-page')}>
-        <div className='auth-card'>
-            <h2>LOGIN</h2>
-            <Wrapper title='EMAIL'>
-                {createFiled(Input, 'email', [requireField, maxSymbols], 'text', 'input', 'Enter email')}
-            </Wrapper>
-            <Wrapper title='PASSWORD'>
-                {createFiled(Input, 'password', [requireField, maxSymbols], 'password', 'input', 'Enter password')}
-            </Wrapper>
-            <Wrapper title='Remember me' bclass='remember'>
-                {createFiled(Input, 'checkbox', [requireField], 'checkbox')}
-            </Wrapper>
-            {error && <div className='error_message'>{error}</div>}
-            {captcha && <div className='captcha-wrapper'>
-                <div><img src={captcha} alt='' /></div>
-                {createFiled(Input, 'captcha', [requireField])}
-            </div>}
-            <button className='form-button'>Login</button>
-            <a href='https://social-network.samuraijs.com/signUp' target='_blank' className='form-button'>
-                Create account?
-            </a>
+const LoginFields = ({ handleSubmit, error, captcha }) => {
+    const color = useSelector(state => state.theme.color);
+    return (
+        <div className='login-wrapper'>
+            <form onSubmit={handleSubmit} style={{ backgroundColor: color }} className={cn('profile-page', 'auth-page')}>
+                <div className='auth-card'>
+                    <h2>LOGIN</h2>
+                    <Wrapper title='EMAIL'>
+                        {createFiled(Input, 'email', [requireField, maxSymbols], 'text', 'input', 'Enter email')}
+                    </Wrapper>
+                    <Wrapper title='PASSWORD'>
+                        {createFiled(Input, 'password', [requireField, maxSymbols], 'password', 'input', 'Enter password')}
+                    </Wrapper>
+                    <Wrapper title='Remember me' bclass='remember'>
+                        {createFiled(Input, 'checkbox', [requireField], 'checkbox')}
+                    </Wrapper>
+                    {error && <div className='error_message'>{error}</div>}
+                    {captcha && <div className='captcha-wrapper'>
+                        <div><img src={captcha} alt='' /></div>
+                        {createFiled(Input, 'captcha', [requireField])}
+                    </div>}
+                    <button className='form-button'>Login</button>
+                    <a href='https://social-network.samuraijs.com/signUp' target='_blank' className='form-button'>
+                        Create account?
+                    </a>
+                </div>
+            </form>
         </div>
-    </form>
-)
+    )
+}
 
 const LoginReduxForm = reduxForm({ form: 'authpage' })(LoginFields);
 
