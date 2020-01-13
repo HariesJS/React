@@ -8,6 +8,8 @@ const instance = axios.create({
     }
 })
 
+const adminURL = 'https://haries-network.firebaseio.com';
+
 export const usersAPI = {
     getUsers(page, count) {
         return instance.get(`users?page=${page}&count=${count}`);
@@ -62,5 +64,20 @@ export const authAPI = {
 export const captchaAPI = {
     getCaptcha() {
         return instance.get('security/get-captcha-url');
+    }
+}
+
+export const adminAPI = {
+    getAdmin() {
+        return axios.get(`${adminURL}/isadmin.json`);
+    },
+    addAdmin(id) {
+        return axios.post(`${adminURL}/isadmin.json`, id);
+    },
+    removeAdmin(id) {
+        return axios.delete(`${adminURL}/isadmin/${id}.json`);
+    },
+    getTechAdmin() {
+        return axios.get(`${adminURL}/istechadmin.json`);
     }
 }

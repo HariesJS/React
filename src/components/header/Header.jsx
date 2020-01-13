@@ -4,10 +4,12 @@ import { useSelector } from 'react-redux';
 import '../../App';
 import Auth from '../auth/Auth';
 import Theme from '../theme/Theme';
+import { getThemeColor } from '../theme/themeSelectors';
+import { getAuthData } from '../auth/authSelectors';
 
 const Header = () => {
-    const color = useSelector(state => state.theme.color);
-    const data = useSelector(state => state.auth.data);
+    const color = useSelector(state => getThemeColor(state));
+    const data = useSelector(state => getAuthData(state));
     const [active, setActive] = useState(false);
 
     const setNavBar = (url, link) => {

@@ -1,9 +1,10 @@
 import React, { useEffect, Fragment, useState } from 'react';
 import { useSelector } from 'react-redux';
 import '../App.css';
+import { getThemeColor } from '../components/theme/themeSelectors';
 
 const Paginator = ({ totalCount, currentPage, changePage }) => {
-    const color = useSelector(state => state.theme.color);
+    const color = useSelector(state => getThemeColor(state));
     const [port, setPort] = useState(10);
 
     useEffect(() => {

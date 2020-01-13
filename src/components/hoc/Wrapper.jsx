@@ -1,9 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import '../../App.css';
+import { getThemeColor } from '../theme/themeSelectors';
 
 const Wrapper = ({ children }) => {
-    const color = useSelector(state => state.theme.color);
+    const color = useSelector(state => getThemeColor(state));
 
     return (
         <div className='wrapper-profile'>

@@ -6,7 +6,8 @@ import '../../App.css';
 import cn from 'classnames';
 import { createFiled, Input } from '../../redux/reduxForm/formsControl';
 import { requireField, maxLength } from '../../redux/reduxForm/validators';
-import { postAuthThunk, setActualAuthCreator } from '../../redux/reducers/authReducer/authReducer';
+import { postAuthThunk } from '../../redux/reducers/authReducer/authReducer';
+import { getAuthData, getAuthCaptcha } from '../auth/authSelectors';
 
 const maxSymbols = maxLength(32);
 
@@ -60,11 +61,10 @@ const LoginReduxForm = reduxForm({ form: 'authpage' })(LoginFields);
 
 const Login = () => {
     const dispatch = useDispatch();
-    const auth = useSelector(state => state.auth.data);
-    const captcha = useSelector(state => state.auth.captcha);
+    const auth = useSelector(state => getAuthData(state));
+    const captcha = useSelector(state => getAuthCaptcha(state));
 
     function data(e) {
-        console.log(e);
         dispatch(postAuthThunk(e.email, e.password, e.checkbox, e.captcha));
     }
     

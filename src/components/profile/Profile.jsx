@@ -6,11 +6,13 @@ import ProfileStatus from './ProfileStatus';
 import Wrapper from '../hoc/Wrapper';
 import { getUsersThunk } from '../../redux/reducers/usersReducer/usersReducer';
 import { Link } from 'react-router-dom';
+import { getUsersData } from '../users/usersSelectors';
 
-const Profile = ({ profile, isOwner, putImageThunk, putProfileThunk, status, ...props }) => {
-    const [editMode, setEditMode] = useState(false);
-    const users = useSelector(state => state.usersPage.users);
+const Profile = ({ data, removeAdminThunk, addAdminThunk, profile, isTechAdmin, isAdmin, isOwner, putImageThunk, putProfileThunk, status, ...props }) => {
     const dispatch = useDispatch();
+    
+    const [editMode, setEditMode] = useState(false);
+    const users = useSelector(state => getUsersData(state));
 
     const loadUsers = useCallback(() => dispatch(getUsersThunk()), [getUsersThunk]);
 
@@ -33,14 +35,37 @@ const Profile = ({ profile, isOwner, putImageThunk, putProfileThunk, status, ...
         .then(() => setEditMode(false));
     }
 
+    const addAdmin = () => {
+        addAdminThunk(profile.userId);
+    }
+
+    const removeAdmin = () => {
+        isAdmin.map(e => {
+            if (e.code === profile.userId) {
+                removeAdminThunk(e.id);
+            }
+        })
+    }
+    
     const userImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/220px-User_icon_2.svg.png';
     return (
         <Fragment>
             <Wrapper>
                 <div className='profile-flex'>
                     <div className='profile-oneblock'>
-                        <div className='profile-info'>{profile.fullName} | {profile.userId}</div>
-                        <div><img className='profile-img' src={profile.photos.large || userImage} alt='' /></div>
+                        {!isTechAdmin.some(id => id.code === profile.userId)
+                        ? !isAdmin.some(id => id.code === profile.userId)
+                        ? <div className='profile-info'>{profile.fullName} | {profile.userId}</div>
+                        : <div className='profile-admin-info '>{profile.fullName} | {profile.userId} (admin)</div>
+                        : <div className='profile-techadmin-info'>{profile.fullName} | {profile.userId} (developer)</div>}
+                        <div><img className={profile.photos.large && 'profile-img'} src={profile.photos.large || userImage} alt='' /></div>
+                        {!isOwner && data.id && (
+                            <>{
+                                !isAdmin.some(id => id.code === profile.userId)
+                                ? <button onClick={addAdmin} className='button'>назначить админом</button>
+                                : <button onClick={removeAdmin} className='button'>снять админа</button>
+                            }</>
+                        )}
                         {isOwner && <input type='file' onChange={changeImage} />}
                         <div className='profile-status'>STATUS: <ProfileStatus status={status} isOwner={isOwner} { ...props } /></div>
                     </div>
@@ -50,9 +75,9 @@ const Profile = ({ profile, isOwner, putImageThunk, putProfileThunk, status, ...
                             : <ProfileDataForm onSubmit={saveProfile} initialValues={profile} profile={profile} />}
                     </div>
                     {isOwner && <div className='followers-wrapper'>
-                        <span className='follow-title'>подписки</span>
+                        <span className='follow-title'>друзья</span>
                         <div className='followers-block'>
-                            {users.filter(e => e.followed === true).map(({ id, name, photos, followed }) => (
+                            {users.filter(e => e.followed === true).map(({ id, name, photos }) => (
                                 <div key={id}>
                                     <Link className='image-wrapper' to={`/profile/${id}`}>
                                         <img className='image-user' src={photos.large || userImage} alt='' />

@@ -1,5 +1,6 @@
 import { usersAPI, followAPI } from "../../../api/ajax";
 import { setGlobalErrorThunk } from "../appReducer/appReducer";
+import { followThunk, followLogic } from '../../../objects-helper/patterns';
 
 const GET_USERS = 'my-app/usersReducer/GET-USERS';
 const POST_FOLLOW = 'my-app/usersReducer/POST-FOLLOW';
@@ -16,29 +17,6 @@ const initialState = {
     currentPage: 2,
     pageCount: 30,
     totalCount: null
-}
-
-const followLogic = (state, id, bolean) => ({
-    ...state, users: state.users.map(user => {
-        if (user.id === id) {
-            return { ...user, followed: bolean };
-        }
-        return user;
-    })
-})
-
-export const followThunk = async (request, id, dispatch, actionCreator) => {
-    try {
-        dispatch(setDisabled(true, id));
-        const response = await request(id);
-        if (response.data.resultCode === 0) {
-            dispatch(actionCreator(id));
-        }
-    } catch (error) {
-        dispatch(setGlobalErrorThunk(error));
-    } finally {
-        dispatch(setDisabled(false, id));
-    }
 }
 
 const handlers = {
@@ -77,9 +55,8 @@ const setLoader = isLoad => ({ type: SET_LOADER, isLoad });
 const getTotalCount = totalCount => ({ type: GET_TOTAL_COUNT, totalCount });
 const setCurrentPage = currentPage => ({ type: SET_CURRENT_PAGE, currentPage });
 
-export const getUsersThunk = (page = 1, count = 30) => async (dispatch, getState) => {
+export const getUsersThunk = (page = 1, count = 30) => async dispatch => {
     try {
-        // const count = getState().usersPage.pageCount;
         dispatch(setLoader(true));
         const response = await usersAPI.getUsers(page, count);
         dispatch(getUsersCreator(response.data.items));
@@ -92,11 +69,11 @@ export const getUsersThunk = (page = 1, count = 30) => async (dispatch, getState
 }
 
 export const follow = id => dispatch => {
-    followThunk(followAPI.postFollow, id, dispatch, followCreator);
+    followThunk(followAPI.postFollow, id, dispatch, followCreator, setDisabled, setGlobalErrorThunk);
 }
 
 export const unfollow = id => dispatch => {
-    followThunk(followAPI.deleteFollow, id, dispatch, unfollowCreator);
+    followThunk(followAPI.deleteFollow, id, dispatch, unfollowCreator, setDisabled, setGlobalErrorThunk);
 }
 
 export default usersReducer;

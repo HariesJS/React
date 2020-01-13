@@ -4,18 +4,20 @@ import { NavLink, Link } from 'react-router-dom';
 import { getAuthThunk, logoutMeThunk, setActualDeauthCreator } from '../../redux/reducers/authReducer/authReducer';
 import '../../App.css';
 import { setThemeColorCreator } from '../../redux/reducers/themeReducer/themeReducer';
+import { getAuthData } from './authSelectors';
+import { getThemeColor } from '../theme/themeSelectors';
 
 const Auth = () => {
     const dispatch = useDispatch();
     const [active, setActive] = useState(false);
-    const data = useSelector(state => state.auth.data);
-    const color = useSelector(state => state.theme.color);
+    const data = useSelector(state => getAuthData(state));
+    const color = useSelector(state => getThemeColor(state));
 
     const loadData = useCallback(() => dispatch(getAuthThunk()), [getAuthThunk]);
     
     useEffect(() => {
         loadData();
-    }, []);
+    }, [loadData]);
 
     const closeForm = () => {
         if (active) {
@@ -34,14 +36,21 @@ const Auth = () => {
         <Fragment>{
             data.isAuth
             ? <div>
-                <Link onMouseOver={() => setActive(true)} onClick={closeForm} className='auth-user' to='/profile'>{data.login}</Link>
-                {active && <span
-                    onMouseOut={() => setActive(false)}
-                    className='logout'
-                    onClick={logoutForm}
-                    style={{ backgroundColor: color }}>
+                <Link
+                    onMouseOver={() => setActive(true)}
+                    onClick={closeForm}
+                    className='auth-user' to='/profile'>
+                        {data.login}
+                    </Link>
+                {active && (
+                    <span
+                        onMouseOut={() => setActive(false)}
+                        className='logout'
+                        onClick={logoutForm}
+                        style={{ backgroundColor: color }}>
                         Log Out
-                    </span>}
+                    </span>
+                )}
             </div>
             : <NavLink className='auth-login' activeClassName='auth-login-active' to='/login'>LOGIN</NavLink>
         }</Fragment>

@@ -11,6 +11,7 @@ import { WithSuspense } from './components/hoc/withSuspense';
 import Updates from "./components/updates/Updates";
 import { setActualAuthCreator, setActualDeauthCreator } from './redux/reducers/authReducer/authReducer';
 import AuthMsg from './components/hoc/AuthMsg';
+import { getAdminThunk, getTechAdminThunk } from './redux/reducers/profileReducer/profileReducer';
 
 const Users = React.lazy(() => import('./components/users/Users'));
 
@@ -25,6 +26,8 @@ const Project = () => {
     
     useEffect(() => {
         dispatch(setInitializingThunk());
+        dispatch(getAdminThunk());
+        dispatch(getTechAdminThunk());
     }, []);
 
     let content = isActualAuth && <AuthMsg>Вы успешно вошли!</AuthMsg>
@@ -53,6 +56,7 @@ const Project = () => {
                 {initializing
                 ? <Switch>
                     <Redirect exact from='/' to='/profile' />
+                    <Redirect exact from={`/profile/${data.id}`} to='/profile' />
                     <Route path='/login' component={Login} />
                     <Route path='/updates' component={Updates} />
                     <Route path='/profile/:userId?' render={() => <ProfileContainer />} />

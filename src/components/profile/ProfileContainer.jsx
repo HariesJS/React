@@ -1,9 +1,11 @@
 import React from 'react';
 import Profile from './Profile';
 import { connect } from 'react-redux';
-import { getProfileThunk, putImageThunk, putProfileThunk, getStatusThunk, putStatusThunk } from '../../redux/reducers/profileReducer/profileReducer';
+import { getProfileThunk, putImageThunk, putProfileThunk, getStatusThunk, putStatusThunk, addAdminThunk, removeAdminThunk } from '../../redux/reducers/profileReducer/profileReducer';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
+import { getProfileData, getProfileStatus, getProfileIsAdmin, getProfileIsTechAdmin } from './profileSelectors';
+import { getAuthData } from '../auth/authSelectors';
 
 class ProfileContainer extends React.Component {
     componentDidMount() {
@@ -33,9 +35,11 @@ class ProfileContainer extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    profile: state.profilePage.profile,
-    status: state.profilePage.status,
-    data: state.auth.data
+    profile: getProfileData(state),
+    status: getProfileStatus(state),
+    isAdmin: getProfileIsAdmin(state),
+    isTechAdmin: getProfileIsTechAdmin(state),
+    data: getAuthData(state)
 })
 
 export default compose(
@@ -45,5 +49,7 @@ export default compose(
     putImageThunk,
     putProfileThunk,
     getStatusThunk,
-    putStatusThunk
+    putStatusThunk,
+    addAdminThunk,
+    removeAdminThunk
 }))(ProfileContainer);
