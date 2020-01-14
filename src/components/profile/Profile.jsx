@@ -59,8 +59,9 @@ const Profile = ({ data, removeAdminThunk, addAdminThunk, profile, isTechAdmin, 
                         : <div className='profile-admin-info '>{profile.fullName} | {profile.userId} (admin)</div>
                         : <div className='profile-techadmin-info'>{profile.fullName} | {profile.userId} (developer)</div>}
                         <div><img className={profile.photos.large && 'profile-img'} src={profile.photos.large || userImage} alt='' /></div>
-                        {!isOwner && data.id && (
+                        {!isOwner && isTechAdmin.some(id => id.code === data.id) && (
                             <>{
+                                isTechAdmin.find(id => id.code === profile.userId) ? null :
                                 !isAdmin.some(id => id.code === profile.userId)
                                 ? <button onClick={addAdmin} className='button'>назначить админом</button>
                                 : <button onClick={removeAdmin} className='button'>снять админа</button>
