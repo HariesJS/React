@@ -23,3 +23,7 @@ export const getUsersTotalCount = state => {
 export const getUsersCurrentPage = state => {
     return state.usersPage.currentPage;
 }
+
+export const getUsersIsOnline = state => {
+    return state.usersPage.isOnline;
+}

@@ -8,7 +8,7 @@ const instance = axios.create({
     }
 })
 
-const adminURL = 'https://haries-network.firebaseio.com';
+const apiURL = 'https://haries-network.firebaseio.com';
 
 export const usersAPI = {
     getUsers(page, count) {
@@ -69,15 +69,27 @@ export const captchaAPI = {
 
 export const adminAPI = {
     getAdmin() {
-        return axios.get(`${adminURL}/isadmin.json`);
+        return axios.get(`${apiURL}/isadmin.json`);
     },
     addAdmin(id) {
-        return axios.post(`${adminURL}/isadmin.json`, id);
+        return axios.post(`${apiURL}/isadmin.json`, id);
     },
     removeAdmin(id) {
-        return axios.delete(`${adminURL}/isadmin/${id}.json`);
+        return axios.delete(`${apiURL}/isadmin/${id}.json`);
     },
     getTechAdmin() {
-        return axios.get(`${adminURL}/istechadmin.json`);
+        return axios.get(`${apiURL}/istechadmin.json`);
+    }
+}
+
+export const onlineAPI = {
+    getOnline() {
+        return axios.get(`${apiURL}/isonline.json`);
+    },
+    setOnline(id) {
+        return axios.post(`${apiURL}/isonline.json`, id);
+    },
+    setOffline(id) {
+        return axios.delete(`${apiURL}/isonline/${id}.json`);
     }
 }

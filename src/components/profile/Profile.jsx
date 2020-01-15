@@ -6,7 +6,8 @@ import ProfileStatus from './ProfileStatus';
 import Wrapper from '../hoc/Wrapper';
 import { getUsersThunk } from '../../redux/reducers/usersReducer/usersReducer';
 import { Link } from 'react-router-dom';
-import { getUsersData } from '../users/usersSelectors';
+import { getUsersData, getUsersIsOnline } from '../users/usersSelectors';
+import { ShowOnlineStatus } from '../hoc/ShowOnlineStatus';
 
 const Profile = ({ data, removeAdminThunk, addAdminThunk, profile, isTechAdmin, isAdmin, isOwner, putImageThunk, putProfileThunk, status, ...props }) => {
     const dispatch = useDispatch();
@@ -58,6 +59,7 @@ const Profile = ({ data, removeAdminThunk, addAdminThunk, profile, isTechAdmin, 
                         ? <div className='profile-info'>{profile.fullName} | {profile.userId}</div>
                         : <div className='profile-admin-info '>{profile.fullName} | {profile.userId} (admin)</div>
                         : <div className='profile-techadmin-info'>{profile.fullName} | {profile.userId} (developer)</div>}
+                        <ShowOnlineStatus data={profile.userId} />
                         <div><img className={profile.photos.large && 'profile-img'} src={profile.photos.large || userImage} alt='' /></div>
                         {!isOwner && isTechAdmin.some(id => id.code === data.id) && (
                             <>{

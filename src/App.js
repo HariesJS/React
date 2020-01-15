@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { useEffect, Fragment, useCallback } from 'react';
 import { HashRouter, Switch, Redirect, Route } from 'react-router-dom';
 import './App.css';
 import Header from './components/header/Header';
@@ -12,6 +12,11 @@ import Updates from "./components/updates/Updates";
 import { setActualAuthCreator, setActualDeauthCreator } from './redux/reducers/authReducer/authReducer';
 import AuthMsg from './components/hoc/AuthMsg';
 import { getAdminThunk, getTechAdminThunk } from './redux/reducers/profileReducer/profileReducer';
+import { getOnlineStatusThunk, setOnlineStatusThunk, setOfflineStatusThunk } from './redux/reducers/usersReducer/usersReducer';
+import { getUsersIsOnline } from './components/users/usersSelectors';
+import { WithSetOffline } from './components/hoc/WithSetOffline';
+import { WithSetOnline } from './components/hoc/WithSetOnline';
+import { getAuthData } from './components/auth/authSelectors';
 
 const Users = React.lazy(() => import('./components/users/Users'));
 
@@ -20,18 +25,22 @@ const Project = () => {
     const initializing = useSelector(state => state.app.initializing);
     const globalError = useSelector(state => state.app.globalError);
     const count = useSelector(state => state.app.count);
-    const data = useSelector(state => state.auth.data);
+    const data = useSelector(state => getAuthData(state));
     const isActualAuth = useSelector(state => state.auth.isActualAuth);
     const isActualDeauth = useSelector(state => state.auth.isActualDeauth);
+    const isOnline = useSelector(state => getUsersIsOnline(state));
     
     useEffect(() => {
         dispatch(setInitializingThunk());
         dispatch(getAdminThunk());
         dispatch(getTechAdminThunk());
-    }, []);
+        dispatch(getOnlineStatusThunk());
+        WithSetOnline(isOnline, dispatch, data, setOnlineStatusThunk);
+        window.onunload = () => WithSetOffline(isOnline, dispatch, data, setOfflineStatusThunk);
+    }, [data.id, isOnline.length, setOfflineStatusThunk]);
 
     let content = isActualAuth && <AuthMsg>Вы успешно вошли!</AuthMsg>
-
+    
     if (isActualDeauth) {
         content = <AuthMsg>Вы успешно вышли!</AuthMsg>
     }

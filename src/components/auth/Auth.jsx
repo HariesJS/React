@@ -6,12 +6,16 @@ import '../../App.css';
 import { setThemeColorCreator } from '../../redux/reducers/themeReducer/themeReducer';
 import { getAuthData } from './authSelectors';
 import { getThemeColor } from '../theme/themeSelectors';
+import { WithSetOffline } from '../hoc/WithSetOffline';
+import { getUsersIsOnline } from '../users/usersSelectors';
+import { setOfflineStatusThunk } from '../../redux/reducers/usersReducer/usersReducer';
 
 const Auth = () => {
     const dispatch = useDispatch();
     const [active, setActive] = useState(false);
     const data = useSelector(state => getAuthData(state));
     const color = useSelector(state => getThemeColor(state));
+    const isOnline = useSelector(state => getUsersIsOnline(state));
 
     const loadData = useCallback(() => dispatch(getAuthThunk()), [getAuthThunk]);
     
@@ -31,6 +35,7 @@ const Auth = () => {
         localStorage.setItem('theme', '#3959ab');
         dispatch(setThemeColorCreator('#3959ab'));
         dispatch(setActualDeauthCreator(true));
+        WithSetOffline(isOnline, dispatch, data, setOfflineStatusThunk);
     }
     return (
         <Fragment>{

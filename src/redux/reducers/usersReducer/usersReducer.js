@@ -1,4 +1,4 @@
-import { usersAPI, followAPI } from "../../../api/ajax";
+import { usersAPI, followAPI, onlineAPI } from "../../../api/ajax";
 import { setGlobalErrorThunk } from "../appReducer/appReducer";
 import { followThunk, followLogic } from '../../../objects-helper/patterns';
 
@@ -9,14 +9,16 @@ const SET_DISABLED = 'my-app/usersReducer/SET-DISABLED';
 const SET_LOADER = 'my-app/usersReducer/SET-LOADER';
 const GET_TOTAL_COUNT = 'my-app/usersReducer/GET-TOTAL-COUNT';
 const SET_CURRENT_PAGE = 'my-app/usersReducer/SET-CURRENT-PAGE';
+const GET_ONLINE_STATUS = 'my-app/usersReducer/GET-ONLINE-STATUS';
 
 const initialState = {
     users: [],
-    isDisabled: [5558],
+    isDisabled: [],
     isLoad: false,
     currentPage: 2,
     pageCount: 30,
-    totalCount: null
+    totalCount: null,
+    isOnline: []
 }
 
 const handlers = {
@@ -39,6 +41,9 @@ const handlers = {
     [SET_CURRENT_PAGE]: (state, { currentPage }) => ({
         ...state, currentPage
     }),
+    [GET_ONLINE_STATUS]: (state, { isOnline }) => ({
+        ...state, isOnline
+    }),
     DEFAULT: state => state
 }
 
@@ -54,6 +59,7 @@ const setDisabled = (bolean, userId) => ({ type: SET_DISABLED, bolean, userId })
 const setLoader = isLoad => ({ type: SET_LOADER, isLoad });
 const getTotalCount = totalCount => ({ type: GET_TOTAL_COUNT, totalCount });
 const setCurrentPage = currentPage => ({ type: SET_CURRENT_PAGE, currentPage });
+const getOnlineStatusCreator = isOnline => ({ type: GET_ONLINE_STATUS, isOnline });
 
 export const getUsersThunk = (page = 1, count = 30) => async dispatch => {
     try {
@@ -74,6 +80,22 @@ export const follow = id => dispatch => {
 
 export const unfollow = id => dispatch => {
     followThunk(followAPI.deleteFollow, id, dispatch, unfollowCreator, setDisabled, setGlobalErrorThunk);
+}
+
+export const getOnlineStatusThunk = () => async dispatch => {
+    const response = await onlineAPI.getOnline();
+    const data = Object.keys(response.data).map(e => ({ code: response.data[e], id: e }));
+    dispatch(getOnlineStatusCreator(data));
+}
+
+export const setOnlineStatusThunk = id => async dispatch => {
+    await onlineAPI.setOnline(id);
+    dispatch(getOnlineStatusThunk());
+}
+
+export const setOfflineStatusThunk = id => async dispatch => {
+    await onlineAPI.setOffline(id);
+    dispatch(getOnlineStatusThunk());
 }
 
 export default usersReducer;

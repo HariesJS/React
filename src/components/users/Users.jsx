@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom';
 import '../../App.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUsersThunk, follow, unfollow } from '../../redux/reducers/usersReducer/usersReducer';
-import { getUsersData, getUsersIsDisabled, getUsersIsLoad, getUsersTotalCount, getUsersCurrentPage } from './usersSelectors';
+import { getUsersData, getUsersIsDisabled, getUsersIsLoad, getUsersTotalCount, getUsersCurrentPage, getUsersIsOnline } from './usersSelectors';
 import Paginator from '../../paginator/paginator';
 import { getThemeColor } from '../theme/themeSelectors';
 import { getAuthData } from '../auth/authSelectors';
 import { getProfileIsTechAdmin, getProfileIsAdmin } from '../profile/profileSelectors';
+import { addAdminThunk } from '../../redux/reducers/profileReducer/profileReducer';
+import { ShowOnlineStatus } from '../hoc/ShowOnlineStatus';
 
 const Users = () => {
     const dispatch = useDispatch();
@@ -20,6 +22,7 @@ const Users = () => {
     const data = useSelector(state => getAuthData(state));
     const isTechAdmin = useSelector(state => getProfileIsTechAdmin(state));
     const isAdmin = useSelector(state => getProfileIsAdmin(state));
+    const isOnline = useSelector(state => getUsersIsOnline(state));
 
     const loadUsers = useCallback(page => dispatch(getUsersThunk(page)), [getUsersThunk]);
 
@@ -47,6 +50,7 @@ const Users = () => {
                         : !isAdmin.some(id => id.code === e.id)
                         ? <div>{e.name} | {e.id}</div>
                         : <div className='profile-admin-info'>{e.name} | {e.id}</div>}
+                        <ShowOnlineStatus data={e.id} />
                         <div align='center'>
                             <Link to={`/profile/${e.id}`}>
                                 <img src={e.photos.large || userImage} alt='' width='60%' />

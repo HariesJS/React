@@ -126,6 +126,22 @@
     transition: 0.5s;
 }
 
+.online-block, .offline-block {
+    text-transform: uppercase;
+    word-spacing: 2px;
+    font-size: 15px;
+    text-align: center;
+    padding: 1%;
+}
+
+.online-block {
+    color: greenyellow;
+}
+
+.offline-block {
+    color: gray;
+}
+
 .user-block:hover {
     transition: 0.5s;
     box-shadow: 12px 12px 32px black;
